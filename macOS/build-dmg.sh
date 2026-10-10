@@ -29,11 +29,29 @@ fi
 cat > "$stage_directory/Read Me.txt" <<'EOF'
 Luno for macOS
 
-Drag Luno.app to Applications, then open it.
-Luno requires Python 3.9 or newer.
+INSTALL
+1. Open this Luno disk image in Finder.
+2. Drag Luno.app onto the Applications folder shortcut.
+3. Wait for the copy to finish, then eject the Luno disk image.
 
-Your Luno files are stored in:
+OPEN
+1. Open your Applications folder.
+2. Double-click Luno.
+3. Luno opens its interface in your default web browser. Keep Luno running
+   while you use it; quit Luno with Command-Q when finished.
+
+FIRST OPEN
+Luno requires Python 3.9 or newer to be installed on your Mac.
+Because this app is not notarized, macOS may show a security warning. If
+macOS blocks it, open Applications, Control-click Luno, choose Open, then
+confirm Open in the dialog.
+
+YOUR FILES
+Luno saves Python files in:
 ~/Library/Application Support/Luno/workspace
+
+The app's log is in:
+~/Library/Logs/Luno/LunoApp.log
 EOF
 
 /usr/bin/hdiutil create \
