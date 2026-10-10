@@ -1,11 +1,10 @@
 #!/bin/sh
 set -eu
 
-project_directory=$(/usr/bin/dirname "$(/usr/bin/dirname "$(/usr/bin/realpath "$0")")")
+project_directory=$(CDPATH= cd "$(/usr/bin/dirname "$0")/.." && pwd -P)
 output_directory="$project_directory/dist"
 output_image="$output_directory/Luno-macOS.dmg"
 stage_directory=$(/usr/bin/mktemp -d "${TMPDIR:-/tmp}/Luno-release.XXXXXX")
-release_directory="$stage_directory/Luno"
 
 cleanup() {
 	/bin/rm -rf "$stage_directory"
@@ -17,11 +16,14 @@ if [ ! -f "$project_directory/.venv/include/Luno.py" ]; then
 	exit 1
 fi
 
-/bin/mkdir -p "$output_directory" "$release_directory"
-/usr/bin/osacompile -s -o "$release_directory/Luno.app" "$project_directory/macOS/Luno.applescript"
-/bin/mkdir -p "$release_directory/Luno.app/Contents/Resources/runtime"
-/usr/bin/ditto "$project_directory/LunoApp.py" "$release_directory/Luno.app/Contents/Resources/LunoApp.py"
-/usr/bin/ditto "$project_directory/.venv/include/Luno.py" "$release_directory/Luno.app/Contents/Resources/runtime/Luno.py"
+/bin/mkdir -p "$output_directory"
+/usr/bin/osacompile -s -o "$project_directory/Luno.app" "$project_directory/macOS/Luno.applescript"
+/bin/mkdir -p "$project_directory/Luno.app/Contents/Resources/runtime"
+/usr/bin/ditto "$project_directory/LunoApp.py" "$project_directory/Luno.app/Contents/Resources/LunoApp.py"
+/usr/bin/ditto "$project_directory/.venv/include/Luno.py" "$project_directory/Luno.app/Contents/Resources/runtime/Luno.py"
+/usr/bin/ditto "$project_directory/Luno.app" "$stage_directory/Luno.app"
+/usr/bin/xattr -cr "$stage_directory/Luno.app"
+/usr/bin/codesign --force --deep --sign - "$stage_directory/Luno.app"
 /bin/ln -s /Applications "$stage_directory/Applications"
 
 cat > "$stage_directory/Read Me.txt" <<'EOF'

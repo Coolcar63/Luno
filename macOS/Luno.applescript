@@ -1,7 +1,7 @@
 property serverPID : ""
 
 on run
-	set resourcesDirectory to POSIX path of (path to resource "LunoApp.py")
+	set resourcesDirectory to POSIX path of (path to me) & "Contents/Resources/"
 	set bundledCli to resourcesDirectory & "runtime/Luno.py"
 	set appScript to resourcesDirectory & "LunoApp.py"
 	set workspaceDirectory to POSIX path of (path to application support from user domain) & "Luno/workspace"
