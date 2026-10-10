@@ -1,11 +1,16 @@
 # Luno for macOS
 
-Build the clickable app from the Luno project folder:
+Build a release disk image from the project folder:
 
 ```sh
-/usr/bin/osacompile -s -o Luno.app macOS/Luno.applescript
+macOS/build-dmg.sh
 ```
 
-Keep `Luno.app` in the project folder beside `LunoApp.py`. Double-click it to
-start Luno in your default browser. Quit Luno from the app menu to stop its
-local server and terminal.
+The resulting `dist/Luno-macOS.dmg` contains `Luno.app` and an Applications
+shortcut. Open the disk image and drag Luno into Applications. Double-click
+Luno to start the browser interface. User files and logs are stored under
+`~/Library/Application Support/Luno` and `~/Library/Logs/Luno`.
+
+Luno requires Python 3.9 or newer on the Mac. The disk image includes Luno's
+application and CLI code, but not a Python runtime. The app is not signed or
+notarized; macOS may require confirmation the first time it is opened.

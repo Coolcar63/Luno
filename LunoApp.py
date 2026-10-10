@@ -21,7 +21,15 @@ from urllib.parse import parse_qs, quote, urlparse
 
 APP_DIRECTORY = Path(__file__).resolve().parent
 CLI_DIRECTORY = APP_DIRECTORY / ".venv" / "include"
-WORKSPACE = CLI_DIRECTORY if (CLI_DIRECTORY / "Luno.py").is_file() else APP_DIRECTORY
+BUNDLED_CLI_DIRECTORY = APP_DIRECTORY / "runtime"
+DEFAULT_WORKSPACE = (
+    CLI_DIRECTORY
+    if (CLI_DIRECTORY / "Luno.py").is_file()
+    else BUNDLED_CLI_DIRECTORY
+    if (BUNDLED_CLI_DIRECTORY / "Luno.py").is_file()
+    else APP_DIRECTORY
+)
+WORKSPACE = Path(os.environ.get("LUNO_WORKSPACE", str(DEFAULT_WORKSPACE))).expanduser()
 MAX_REQUEST_BYTES = 1_000_000
 RUN_TIMEOUT_SECONDS = 30
 MAX_TERMINAL_OUTPUT = 200_000
